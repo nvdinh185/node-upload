@@ -1,6 +1,4 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
-import { FormGroup, FormBuilder } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -9,21 +7,15 @@ import { HttpClient } from '@angular/common/http';
 })
 export class UploadPage {
 
-  myFromGroup: FormGroup;
   isImageViewer: boolean = false;
 
   resourceImages: { imageViewer: any, file: any, name: string }[] = [];
 
-  constructor(public navCtrl: NavController,
-    private formBuilder: FormBuilder,
-    private httpClient: HttpClient) { }
+  constructor(
+    private httpClient: HttpClient) {
+  }
 
   ngOnInit() {
-    this.myFromGroup = this.formBuilder.group({
-      user: 'cuongdq',
-      pass: '123',
-      fileload: ''
-    });
   }
 
   /**
@@ -61,7 +53,6 @@ export class UploadPage {
 
 
   deleteImage(evt) {
-    //console.log(evt);
     //loc doi tuong xoa bo no di
     this.resourceImages = this.resourceImages.filter(value => value != evt)
   }
