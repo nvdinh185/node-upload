@@ -1,26 +1,34 @@
-const express = require('express');
-const app = express();
+var http = require('http');
+var fs = require('fs');
+var formidable = require('formidable');
 
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', 'Content-Type,X-Requested-With');
-  next();
-});
-
-main = (isHttp) => {
-
-  app.use('/file', require('./routes/resource'));
-
-  if (isHttp) {
-    const httpServer = require('http').createServer(app);
-    const portHttp = process.env.PORT || isHttp;
-
-    httpServer.listen(portHttp, () => {
-      console.log("Server HTTP is started with PORT: " + portHttp);
-    });
-  }
-}
-
-const isHttp = 8080;
-
-main(isHttp);
+http.createServer(function (req, res) {
+    //Nếu request là uplooad và method là post
+    if (req.url == '/upload' && req.method.toLowerCase() == 'post') {
+        //Khởi tạo form
+        var form =  new formidable.IncomingForm();
+        //Thiết lập thư mục chứa file trên server
+        form.uploadDir = "uploads/";
+        //xử lý upload
+        form.parse(req,function (err, fields, file) {
+            //path tmp trên server
+            var path = file.files.path;
+            //thiết lập path mới cho file
+            var newpath = form.uploadDir + file.files.name;
+            fs.rename(path, newpath, function (err) {
+                if (err) throw err;
+                res.end('Upload Thanh cong!');
+            });
+        });
+        return ;
+    }
+    //xét header cho request
+    res.writeHead('200',{'Content-Type': 'text/html'});
+    //Đọc file index và trả về dữ liệu
+    fs.readFile('index.html','utf8',function (err,data) {
+        //nếu nỗi thì thông báo
+        if (err) throw err;
+        //không lỗi thì render data
+        res.end(data);    
+    })
+}).listen(8000);
