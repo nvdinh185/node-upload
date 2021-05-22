@@ -44,7 +44,7 @@ http.createServer((req, res) => {
             });
           });
           // console.log(arData);
-        });
+        }).catch(err => console.log("Lỗi: ", err));
         res.end('File uploaded!');
       });
     });
