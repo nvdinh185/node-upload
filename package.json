@@ -11,7 +11,7 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "nodemon server"
+    "start": "nodemon server"
   },
   "author": "DinhNV",
   "license": "ISC"
